@@ -35,12 +35,14 @@ if __name__ == '__main__':
     data_df = data_df / 225.0 * 2 - 1
     X_train, X_test, y_train, y_test = train_test_split(data_df, labels_df, random_state=98, test_size=0.2)
     clf = svm.SVC(kernel='linear')
-    print("Cross validation result: {}".format(cv(X_train, y_train, clf, 5)))
+    lables = ['linear', 'poly', 'rbf']
+    gamma = [0.001, 0.01, 0.1, 1, 10]
+    degree = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    cv_res = cv(X_train, y_train, clf, 5)
     clf.fit(X_train, y_train)
     pred_y = clf.predict(X_train)
-    res1 = sum([pred_y[i] != y_train[i] for i in range(len(pred_y))])/len(pred_y)
-    print("Training set result: {}".format(res1))
+    train_res = sum([pred_y[i] != y_train[i] for i in range(len(pred_y))])/len(pred_y)
     pred_y2 = clf.predict(X_test)
-    res2 = sum([pred_y2[i] != y_test[i] for i in range(len(pred_y2))])/len(pred_y2)
-    print("Test set result: {}".format(res2))
+    test_res = sum([pred_y2[i] != y_test[i] for i in range(len(pred_y2))])/len(pred_y2)
+    print("svm_{}_{}: {}, {}, {}".format(lables[0], None, cv_res, train_res, test_res))
 
